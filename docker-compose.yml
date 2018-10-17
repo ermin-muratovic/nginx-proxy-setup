@@ -62,5 +62,6 @@ services:
       - docker_net
 
 networks:
-  docker_net:
-    driver: bridge
+  default:
+    external:
+      name: docker_net
