@@ -53,6 +53,26 @@ services:
       - docker_net
     volumes:
       - ./server/db/mongodb:/data/db
+      
+  mongodbadmin:
+    image: mongo-express
+    container_name: mongodbadmin
+    restart: always
+    cpu_shares: 10
+    mem_limit: 524288000
+    networks:
+      - docker_net
+    links:
+      - mongodb:mongo
+    depends_on:
+      - mongodb
+    environment:
+      - VIRTUAL_HOST=${MONGODB_HOSTNAME}
+      - VIRTUAL_NETWORK=docker_net
+      - LETSENCRYPT_HOST=${MONGODB_HOSTNAME}
+      - LETSENCRYPT_EMAIL=${OFFICE_EMAIL}
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGODB_USER}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGODB_PASS}
 
   redisstore:
     image: redis
